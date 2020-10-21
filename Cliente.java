@@ -13,7 +13,7 @@ public class Cliente {
 	public static void muestraErrorSQL(SQLException e) {
 	    System.err.println("SQL ERROR mensaje: " + e.getMessage());
 	    System.err.println("SQL Estado: " + e.getSQLState());
-	    System.err.println("SQL c�digo espec�fico: " + e.getErrorCode());
+	    System.err.println("SQL código específico: " + e.getErrorCode());
 	  }
 	
 	  
@@ -36,7 +36,7 @@ public class Cliente {
 		  
 		  try  {
 			  conexion = DriverManager.getConnection(urlConnection, user, pwd);
-		      System.out.println("Conexi�n realizada.");
+		      System.out.println("Conexión realizada.");
 		      
 		    } catch (SQLException e) {
 		      muestraErrorSQL(e);
@@ -82,6 +82,7 @@ public class Cliente {
 		    		r.close();
 					conexion.close();
 					salir = true;
+					System.out.println("Vuelve pronto...");
 				} catch (SQLException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -126,21 +127,37 @@ public class Cliente {
 				}
 		    	break;
 		    default:
-		    	System.out.println("Opcion no valida");
+		    	try {
+		    		
+					if(r.absolute(Integer.parseInt(opcion))) {
+						String DNI = r.getString("DNI");
+						String APELLIDOS = r.getString("APELLIDOS");
+						String CP = r.getString("CP");
+						System.out.println("ROW " + r.getRow() + " = " + DNI + " " + APELLIDOS + " " + CP);
+					}
+					else {
+						System.out.println("Opcion no válida");
+					}
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+		    	catch(NumberFormatException e1) {
+		    		System.out.println("Opcion no válida " + e1.getMessage());
+		    	}
 		    }
 	    	
 	    }
 	    
-	    
 
-  
 	  }
 	  
 	  public static String menu() {
-		  System.out.println("Elige una opcion: \n . -para finalizar \n k -para avanzar de fila \n d -para retroceder \n s para salir");
+		  System.out.println("Elige una opcion: \n . -para finalizar \n k -para avanzar de fila \n d -para retroceder \n s para salir \n Tambien puedes ir a la fila con su numero");
 		  String opcion = teclado.nextLine();
 		return opcion;
 	  }
 	
 
 }
+
